@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="About — Nhial Wei" description="Who I am, why I write, and what you can expect here.">
+  <h1>About</h1>
+  <p class="lede">
+    I write to think clearly, learn in public, and turn experience into guidance that helps other people move forward.
+  </p>
+
+  <div class="grid cols-2" style="margin-top:1.25rem;">
+    <div class="card">
+      <h3>What this site is</h3>
+      <p>
+        A calm, typography-first space for journal entries, ideas, and practical career guidance.
+        Minimal noise. High signal.
+      </p>
+    </div>
+    <div class="card">
+      <h3>What to expect</h3>
+      <p>
+        Reflections, learning notes, and frameworks you can apply immediately.
+        I optimize for clarity and usefulness.
+      </p>
+    </div>
+  </div>
+
+  <h2>Principles</h2>
+  <ul>
+    <li>Consistency beats intensity.</li>
+    <li>Clarity is respect for the reader.</li>
+    <li>Trust is built through proof of work.</li>
+    <li>Write what you learn; share what helps.</li>
+  </ul>
+
+  <div class="hr"></div>
+
+  <div class="card">
+    <h3>Follow along</h3>
+    <p>
+      The simplest way is RSS. If you prefer email, subscribe and I’ll send new posts at a low frequency.
+    </p>
+    <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.7rem;">
+      <a class="btn" href="/rss.xml">RSS</a>
+      <a class="btn primary" href="/subscribe">Subscribe</a>
+    </div>
+  </div>
+</BaseLayout>

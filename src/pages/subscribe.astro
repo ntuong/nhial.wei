@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Subscribe — Nhial Wei" description="Subscribe to receive new posts by email at a low frequency.">
+  <h1>Subscribe</h1>
+  <p class="lede">
+    One email every two weeks: one practical idea, one reflection, and one tool you can use immediately.
+    No spam. Unsubscribe anytime.
+  </p>
+
+  <div class="card" style="margin-top:1.25rem;">
+    <h3>Newsletter signup</h3>
+    <p style="margin-top:.35rem;">
+      Connect this form to your newsletter provider (Buttondown, Beehiiv, Mailchimp, ConvertKit, etc.).
+      For the MVP, this is a placeholder.
+    </p>
+
+    <form class="form" method="post" action="#">
+      <label style="display:none;" for="email">Email</label>
+      <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+      <button class="btn primary" type="submit">Subscribe</button>
+    </form>
+
+    <p style="color:var(--muted); font-size:.95rem; margin-top:.7rem;">
+      Privacy note: your email is used only to send new posts.
+    </p>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="card">
+    <h3>Prefer RSS?</h3>
+    <p>Use RSS to follow without email.</p>
+    <a class="btn" href="/rss.xml">RSS Feed</a>
+  </div>
+</BaseLayout>

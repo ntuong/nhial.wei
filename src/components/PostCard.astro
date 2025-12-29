@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+const { post } = Astro.props as { post: CollectionEntry<'journal'> };
+const { title, description, pubDate, category } = post.data;
+
+const date = pubDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+<article class="card">
+  <div class="meta">
+    <span class="badge">{category}</span>
+    <span>{date}</span>
+  </div>
+  <h3 style="margin:.55rem 0 .25rem;">
+    <a href={`/journal/${post.slug}`}>{title}</a>
+  </h3>
+  <p>{description}</p>
+</article>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("journal", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, category, tags, updatedDate } = post.data;
+
+const dateFmt = (d) => d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: '2-digit' });
+const published = dateFmt(pubDate);
+const updated = updatedDate ? dateFmt(updatedDate) : null;
+
+const all = (await getCollection("journal", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const idx = all.findIndex(p => p.slug === post.slug);
+const prev = idx < all.length - 1 ? all[idx + 1] : null;
+const next = idx > 0 ? all[idx - 1] : null;
+---
+<BaseLayout title={`${title} — Your Name`} description={description}>
+  <article>
+    <h1>{title}</h1>
+    <div class="meta" style="margin:.25rem 0 1.2rem;">
+      <span class="badge">{category}</span>
+      <span>Published {published}</span>
+      {updated && <span>Updated {updated}</span>}
+      {tags?.length > 0 && <span>·</span>}
+      {tags?.length > 0 && tags.map((t) => <span class="badge">{t}</span>)}
+    </div>
+
+    <div class="callout">
+      <strong>Key takeaway</strong>
+      <span>{description}</span>
+    </div>
+
+    <div class="content">
+      <post.Content />
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="card">
+      <h3>Subscribe</h3>
+      <p>Get future posts by email (low frequency, high signal). Or follow via RSS.</p>
+      <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.7rem;">
+        <a class="btn primary" href="/subscribe">Subscribe</a>
+        <a class="btn" href="/rss.xml">RSS</a>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="grid cols-2">
+      {prev && (
+        <div class="card">
+          <div class="meta"><span class="badge">Previous</span></div>
+          <h3 style="margin:.55rem 0 0;"><a href={`/journal/${prev.slug}`}>{prev.data.title}</a></h3>
+          <p>{prev.data.description}</p>
+        </div>
+      )}
+      {next && (
+        <div class="card">
+          <div class="meta"><span class="badge">Next</span></div>
+          <h3 style="margin:.55rem 0 0;"><a href={`/journal/${next.slug}`}>{next.data.title}</a></h3>
+          <p>{next.data.description}</p>
+        </div>
+      )}
+    </div>
+  </article>
+</BaseLayout>

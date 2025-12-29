@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("journal", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const categories = ["Reflections", "Career", "Learning", "Ideas"] as const;
+const selected = Astro.url.searchParams.get("category");
+
+const filtered = selected ? posts.filter(p => p.data.category === selected) : posts;
+---
+<BaseLayout title="Journal — Nhial Wei" description="Long-form journal entries: reflections, learning, ideas, and career guidance.">
+  <h1>Journal</h1>
+  <p class="lede">Long-form writing designed for clarity and return visits.</p>
+
+  <div class="card" style="margin:1rem 0;">
+    <div class="meta">
+      <strong style="color:var(--text);">Filter:</strong>
+      <a class="badge" href="/journal" aria-current={!selected ? "page" : undefined}>All</a>
+      {categories.map((c) => (
+        <a class="badge" href={`/journal?category=${encodeURIComponent(c)}`} aria-current={selected === c ? "page" : undefined}>{c}</a>
+      ))}
+    </div>
+  </div>
+
+  <div class="grid cols-2">
+    {filtered.map(post => <PostCard post={post} />)}
+  </div>
+</BaseLayout>

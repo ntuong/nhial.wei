@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("journal", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const featured = posts.filter(p => p.data.featured).slice(0, 2);
+const latest = posts.slice(0, 6);
+---
+<BaseLayout
+  title="Nhial Wei — Journal, Insights, Career Guidance"
+  description="A calm place for long-form writing: reflections, learning notes, and practical career guidance."
+>
+  <h1>Write what you learn. Share what helps.</h1>
+  <p class="lede">
+    This is a minimalist space for journaling, sharing personal insights, and offering practical career guidance—built for clarity and longevity.
+    The goal is simple: publish ideas worth returning to.
+  </p>
+
+  <div style="margin-top:1.2rem; display:flex; gap:.75rem; flex-wrap:wrap;">
+    <a class="btn primary" href="/journal">Read the Journal</a>
+    <a class="btn" href="/subscribe">Subscribe</a>
+  </div>
+
+  <div class="hr"></div>
+
+  {featured.length > 0 && (
+    <>
+      <h2>Featured</h2>
+      <div class="grid cols-2">
+        {featured.map(post => <PostCard post={post} />)}
+      </div>
+      <div class="hr"></div>
+    </>
+  )}
+
+  <h2>Latest</h2>
+  <div class="grid cols-2">
+    {latest.map(post => <PostCard post={post} />)}
+  </div>
+
+  <div class="hr"></div>
+
+  <h2>Guidance library</h2>
+  <p class="lede">Evergreen notes: frameworks, checklists, and lessons from real work.</p>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3><a href="/guidance#career-foundations">Career Foundations</a></h3>
+      <p>Positioning, credibility, skill-building, and sustainable habits.</p>
+    </div>
+    <div class="card">
+      <h3><a href="/guidance#decision-tools">Decision Tools</a></h3>
+      <p>Simple models to think clearly under pressure and uncertainty.</p>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="card">
+    <h3>Subscribe</h3>
+    <p style="margin-top:.35rem;">
+      One email every two weeks: one practical idea, one reflection, and one tool you can use immediately.
+      No spam.
+    </p>
+    <div style="margin-top:.8rem;">
+      <a class="btn primary" href="/subscribe">Go to Subscribe</a>
+      <a class="btn" href="/rss.xml" style="margin-left:.5rem;">Use RSS</a>
+    </div>
+  </div>
+</BaseLayout>

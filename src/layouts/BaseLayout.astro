@@ -1,0 +1,70 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Nhial Wei",
+  description = "Journaling, personal insights, and career guidance.",
+  url = Astro.url,
+  ogImage = "/og.png",
+} = Astro.props;
+
+const canonical = new URL(url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.toString()} />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical.toString()} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <a href="/">Nhial Wei</a>
+          <small>Journaling, personal insights, and career guidance.</small>
+        </div>
+
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="/" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a></li>
+            <li><a href="/journal" aria-current={Astro.url.pathname.startsWith("/journal") ? "page" : undefined}>Journal</a></li>
+            <li><a href="/guidance" aria-current={Astro.url.pathname === "/guidance" ? "page" : undefined}>Guidance</a></li>
+            <li><a href="/about" aria-current={Astro.url.pathname === "/about" ? "page" : undefined}>About</a></li>
+            <li><a href="/subscribe" aria-current={Astro.url.pathname === "/subscribe" ? "page" : undefined}>Subscribe</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="meta" style="justify-content:space-between;">
+          <span>© {new Date().getFullYear()} Nhial Wei</span>
+          <span>
+            <a href="/rss.xml">RSS</a>
+            <span aria-hidden="true"> · </span>
+            <a href="/privacy">Privacy</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
